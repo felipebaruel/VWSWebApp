@@ -48,9 +48,51 @@ namespace VWSWebApp.Controllers
         {
 
             Trace.WriteLine("Entering HighCPU method");
+            var fullurl = Request.Url;
+
+            var HighCPUSmall = Request.Url.AbsoluteUri.Substring(0, Request.Url.AbsoluteUri.Length - Request.Url.AbsolutePath.Length) + "/Home/HighCPUSmall";
+            var HighCPUBig = Request.Url.AbsoluteUri.Substring(0, Request.Url.AbsoluteUri.Length - Request.Url.AbsolutePath.Length) + "/Home/HighCPUBig";
+
+            ViewBag.HighCPUSmall = HighCPUSmall;
+            ViewBag.HighCPUBig = HighCPUBig;
+
+
+            Trace.WriteLine("Ending HighCPU method");
+
+            return View();
+        }
+
+        public ActionResult HighCPUSmall()
+        {
+
+            Trace.WriteLine("Entering HighCPUSmall method");
             var datea = System.DateTime.Now;
-            ViewBag.Message = $"Start CPU Time: {datea}";
-            Trace.TraceInformation($"Start CPU Time: {datea}");
+            ViewBag.Message = $"HighCPUSmall - Start CPU Time: {datea}";
+            Trace.TraceInformation($"HighCPUSmall - Start CPU Time: {datea}");
+            int result = 1;
+            for (int x = 1; x < 5; x++)
+            {
+                for (int i = 1; i < 2147483647; i++)
+                {
+                    result = result * i;
+                }
+            }
+
+            var dateb = System.DateTime.Now;
+            ViewBag.Message2 = $"HighCPUSmall - End CPU Time: {dateb}";
+            Trace.TraceInformation($"HighCPUSmall - End CPU Time: {dateb}");
+
+
+            return View();
+        }
+
+        public ActionResult HighCPUBig()
+        {
+
+            Trace.WriteLine("Entering HighCPUBig method");
+            var datea = System.DateTime.Now;
+            ViewBag.Message = $"HighCPUBig - Start CPU Time: {datea}";
+            Trace.TraceInformation($"HighCPUBig - Start CPU Time: {datea}");
             int result = 1;
             for (int x = 1; x < 20; x++)
             {
@@ -61,12 +103,14 @@ namespace VWSWebApp.Controllers
             }
 
             var dateb = System.DateTime.Now;
-            ViewBag.Message2 = $"End CPU Time: {dateb}";
-            Trace.TraceInformation($"End CPU Time: {dateb}");
+            ViewBag.Message2 = $"HighCPUBig - End CPU Time: {dateb}";
+            Trace.TraceInformation($"HighCPUBig - End CPU Time: {dateb}");
 
 
             return View();
         }
+
+
 
         public ActionResult Crash()
         {
