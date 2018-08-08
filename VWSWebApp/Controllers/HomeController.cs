@@ -16,8 +16,8 @@ namespace VWSWebApp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page. 123";
-
+            string currentTime = DateTime.Now.ToLongTimeString();
+            ViewBag.Message = "The current time is " + currentTime;
             return View();
         }
 
@@ -58,6 +58,15 @@ namespace VWSWebApp.Controllers
             var fn = 10;
             var sn = 0;
             var a = fn / sn;
+
+            return View();
+        }
+
+        public ActionResult Error404()
+        {
+            //var urlquery = Request.QueryString.Get(0);
+            var fullurl = Request.Url;
+            ViewBag.Message = "PageNotFound: " + fullurl;
 
             return View();
         }
