@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Diagnostics;
+using System.Net.Sockets;
+using VWSWebApp.Tools;
+using System.Threading;
+
 
 namespace VWSWebApp.Controllers
 {
@@ -12,87 +15,33 @@ namespace VWSWebApp.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Test Test Test";
-
-            Trace.WriteLine("Entering Index method");
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-            Trace.TraceInformation("Displaying the Index page at " + DateTime.Now.ToLongTimeString());
-            Trace.WriteLine("Leaving Index method");
-            
-
             return View();
         }
 
         public ActionResult About()
         {
-            string currentTime = DateTime.Now.ToLongTimeString();
-            
-
-            Trace.WriteLine("Entering About method");
-            ViewBag.Message = "The current time is " + currentTime;
-            Trace.TraceWarning("Transient error on the About page at " + DateTime.Now.ToShortTimeString());
-            Trace.WriteLine("Leaving About method");
+            ViewBag.Message = "Your application description page. 123";
 
             return View();
         }
 
+        
         public ActionResult Contact()
         {
-            Trace.WriteLine("Entering Contact method");
-            ViewBag.Message = "Your contact page.";
-            Trace.TraceError("Fatal error on the Contact page at " + DateTime.Now.ToLongTimeString());
-            Trace.WriteLine("Leaving Contact method");
+            GlobalVariables.GlobalCount = GlobalVariables.GlobalCount+1;
+            GlobalVariables.GlobalString = "O valor é: " + GlobalVariables.GlobalCount;
+            ViewBag.Message = "Your contact page. \r\n" + GlobalVariables.GlobalString;
+
             return View();
         }
 
         public ActionResult HighCPU()
         {
+            
 
-            Trace.WriteLine("Entering HighCPU method");
-            var fullurl = Request.Url;
-
-            var HighCPUSmall = Request.Url.AbsoluteUri.Substring(0, Request.Url.AbsoluteUri.Length - Request.Url.AbsolutePath.Length) + "/Home/HighCPUSmall";
-            var HighCPUBig = Request.Url.AbsoluteUri.Substring(0, Request.Url.AbsoluteUri.Length - Request.Url.AbsolutePath.Length) + "/Home/HighCPUBig";
-
-            ViewBag.HighCPUSmall = HighCPUSmall;
-            ViewBag.HighCPUBig = HighCPUBig;
-
-
-            Trace.WriteLine("Ending HighCPU method");
-
-            return View();
-        }
-
-        public ActionResult HighCPUSmall()
-        {
-
-            Trace.WriteLine("Entering HighCPUSmall method");
             var datea = System.DateTime.Now;
-            ViewBag.Message = $"HighCPUSmall - Start CPU Time: {datea}";
-            Trace.TraceInformation($"HighCPUSmall - Start CPU Time: {datea}");
-            int result = 1;
-            for (int x = 1; x < 5; x++)
-            {
-                for (int i = 1; i < 2147483647; i++)
-                {
-                    result = result * i;
-                }
-            }
+            ViewBag.Message = $"Start CPU Time: {datea}";
 
-            var dateb = System.DateTime.Now;
-            ViewBag.Message2 = $"HighCPUSmall - End CPU Time: {dateb}";
-            Trace.TraceInformation($"HighCPUSmall - End CPU Time: {dateb}");
-
-
-            return View();
-        }
-
-        public ActionResult HighCPUBig()
-        {
-
-            Trace.WriteLine("Entering HighCPUBig method");
-            var datea = System.DateTime.Now;
-            ViewBag.Message = $"HighCPUBig - Start CPU Time: {datea}";
-            Trace.TraceInformation($"HighCPUBig - Start CPU Time: {datea}");
             int result = 1;
             for (int x = 1; x < 20; x++)
             {
@@ -103,14 +52,11 @@ namespace VWSWebApp.Controllers
             }
 
             var dateb = System.DateTime.Now;
-            ViewBag.Message2 = $"HighCPUBig - End CPU Time: {dateb}";
-            Trace.TraceInformation($"HighCPUBig - End CPU Time: {dateb}");
+            ViewBag.Message2 = $"End CPU Time: {dateb}";
 
-
+            
             return View();
         }
-
-
 
         public ActionResult Crash()
         {
@@ -123,11 +69,16 @@ namespace VWSWebApp.Controllers
             return View();
         }
 
-        public ActionResult Error404()
+        public ActionResult SNatPortExhaustion()
         {
-            //var urlquery = Request.QueryString.Get(0);
-            var fullurl = Request.Url;
-            ViewBag.Message = "PageNotFound: " + fullurl;
+            ViewBag.Message = "Inicio";
+            GlobalVariables.GlobalSocketList = AsynchronousClient.StartClient("www.google.com", 80, 20);
+            ViewBag.Amount = GlobalVariables.GlobalSocketList.Count;
+            Thread.Sleep(20 * 1000);
+            AsynchronousClient.StopClient(GlobalVariables.GlobalSocketList);
+            GlobalVariables.GlobalSocketList.Clear();
+            ViewBag.Amount2 = GlobalVariables.GlobalSocketList.Count;
+            ViewBag.Message2 = "Fim";
 
             return View();
         }
