@@ -36,19 +36,20 @@ namespace VWSWebApp.Controllers
                 if (GlobalVariables.GlobalSocketList != null) { 
                     if (GlobalVariables.GlobalSocketList.Count > 0)
                     {
-                        response = Request.CreateResponse(HttpStatusCode.BadRequest, "There are " + GlobalVariables.GlobalSocketList.Count + " connections running. Please stop the current connections to create more connections.");
+                        response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""There are " + GlobalVariables.GlobalSocketList.Count + @" connections running. Please stop the current connections to create more connections.""}");
+                                                                            //@"{""Status"": ""There are " + GlobalVariables.GlobalSocketList.Count + @" connections opened.""}"
 
                     }
                     else
                     {
                         GlobalVariables.GlobalSocketList = AsynchronousClient.StartClient(socketcmd.Host, socketcmd.Port, socketcmd.Connections);
-                        response = Request.CreateResponse(HttpStatusCode.OK, "Sockets created based in: \r\n" + data + "\r\nYour request created " + GlobalVariables.GlobalSocketList.Count + " number of connections.");
+                        response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""Requests created " + GlobalVariables.GlobalSocketList.Count + @" number of connections.""}");
                     }
                 }
                 else
                 {
                     GlobalVariables.GlobalSocketList = AsynchronousClient.StartClient(socketcmd.Host, socketcmd.Port, socketcmd.Connections);
-                    response = Request.CreateResponse(HttpStatusCode.OK, "Sockets created based in: \r\n" + data + "\r\nYour request created " + GlobalVariables.GlobalSocketList.Count + " number of connections.");
+                    response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""Requests created " + GlobalVariables.GlobalSocketList.Count + @" number of connections.""}");
                 }
 
             }

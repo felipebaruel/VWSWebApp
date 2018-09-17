@@ -28,18 +28,18 @@ namespace VWSWebApp.Controllers
                 
                 if (GlobalVariables.GlobalSocketList.Count == 0)
                 {
-                    response = Request.CreateResponse(HttpStatusCode.OK, "All connections are closed." );
+                    response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""No connections opened!}");
                 }
                 else if (GlobalVariables.GlobalSocketList.Count != 0)
                 {
-                    response = Request.CreateResponse(HttpStatusCode.OK, "There are " + GlobalVariables.GlobalSocketList.Count + " connections opened." );
+                    response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""There are " + GlobalVariables.GlobalSocketList.Count + @" connections opened.""}");
                 }
-                response = Request.CreateResponse(HttpStatusCode.OK, "There are " + GlobalVariables.GlobalSocketList.Count + " connections opened." );
+                response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""There are " + GlobalVariables.GlobalSocketList.Count + @" connections opened.""}");
             }
             catch (Exception)
             {
 
-                response = Request.CreateResponse(HttpStatusCode.BadRequest, "There are any connection running, Please create a connection first.");
+                response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""There are no connections opened!""}");
                 return response;
             }
             return response;

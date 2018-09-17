@@ -20,12 +20,12 @@ namespace VWSWebApp.Controllers
             try
             {
                 AsynchronousClient.StopClient(GlobalVariables.GlobalSocketList);
-                response = Request.CreateResponse(HttpStatusCode.OK, "All connections was stoped: " + GlobalVariables.GlobalSocketList.Count);
+                response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""All connections was stoped:" + GlobalVariables.GlobalSocketList.Count + @"""}");
                 GlobalVariables.GlobalSocketList.Clear();
             }
             catch (Exception)
             {
-                response = Request.CreateResponse(HttpStatusCode.BadRequest, "No existing connection. Please create a connection first.");
+                response = Request.CreateResponse(HttpStatusCode.OK, @"{""Status"": ""No existing connection. Please create a connection first.""}");
                 return response;
             }
             return response;
